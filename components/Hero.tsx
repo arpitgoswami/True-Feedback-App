@@ -7,8 +7,15 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
 
+// Add this interface near the top of the file, after the imports
+interface VideoFormat {
+  mimeType: string;
+  qualityLabel: string;
+  url: string;
+}
+
 export default function Hero() {
-  const [formats, setFormats] = useState([]);
+  const [formats, setFormats] = useState<VideoFormat[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [url, setUrl] = useState("");
 
@@ -33,7 +40,7 @@ export default function Hero() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-4 mt-[20rem]">
+    <div className="flex flex-col items-center justify-center h-screen gap-4">
       <h1 className="text-4xl font-bold text-center">
         Search for your favorite videos
       </h1>
@@ -61,7 +68,7 @@ export default function Hero() {
         {formats.length > 0 &&
           (() => {
             const uniqueQualities: { [key: string]: boolean } = {};
-            return formats.map((data: any, index: number) => {
+            return formats.map((data: VideoFormat, index: number) => {
               if (
                 data.mimeType.includes("video/mp4") &&
                 !uniqueQualities[data.qualityLabel]

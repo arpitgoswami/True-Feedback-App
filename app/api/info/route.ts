@@ -14,9 +14,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(formats);
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch video info" },
-      { status: 500 }
-    );
+    console.log(error);
   }
 }
