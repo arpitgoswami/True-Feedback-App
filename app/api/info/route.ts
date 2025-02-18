@@ -14,6 +14,10 @@ export async function POST(request: Request) {
 
     return NextResponse.json(formats);
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    return NextResponse.json(
+      { error: "Failed to process video information" },
+      { status: 500 }
+    );
   }
 }
