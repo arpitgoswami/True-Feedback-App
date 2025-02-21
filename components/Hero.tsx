@@ -5,6 +5,10 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
 
+import { AuroraBackground } from "@/components/ui/aurora-background";
+import { motion } from "framer-motion";
+import { FiVideo, FiDownload } from "react-icons/fi";
+
 // Add this interface near the top of the file, after the imports
 interface VideoFormat {
   mimeType: string;
@@ -38,92 +42,94 @@ export default function Hero() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-4">
-      <h1 className="text-4xl font-bold text-center">
-        Search for your favorite videos
-      </h1>
-      <p className="text-lg text-center text-muted-foreground">
-        Convert Youtube videos to mp3, mp4, and more with our easy to use
-        converter.
-      </p>
-      <form
-        className="flex w-full max-w-sm items-center space-x-2"
-        onSubmit={handleSubmit}
+    <AuroraBackground>
+      <motion.div
+        initial={{ opacity: 0.0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{
+          delay: 0.3,
+          duration: 0.8,
+          ease: "easeInOut",
+        }}
+        className="flex flex-col gap-4 items-center justify-center px-4 z-10"
       >
-        <Input
-          type="text"
-          placeholder="Search for your favorite videos"
-          disabled={isLoading}
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-        />
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Searching..." : "Search"}
-        </Button>
-      </form>
+        <div className="flex flex-col items-center justify-center gap-4">
+          <h1 className="z-10 text-lg md:text-6xl  bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600  text-center font-sans font-bold">
+            Download Youtube Videos
+          </h1>
+          <p className="text-center text-muted-foreground">
+            Convert Youtube videos to mp3, mp4, and more with our{" "}
+            <span className="text-white">easy to use </span>
+            converter.
+          </p>
+          <form
+            className="flex w-full max-w-sm items-center space-x-2"
+            onSubmit={handleSubmit}
+          >
+            <Input
+              type="text"
+              placeholder="Search for your favorite videos"
+              disabled={isLoading}
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              className="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white"
+            />
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Searching..." : "Search"}
+            </Button>
+          </form>
+        </div>
 
-      <div className="w-full max-w-sm space-y-4">
-        {formats.length > 0 &&
-          (() => {
-            const uniqueQualities: { [key: string]: boolean } = {};
-            return formats.map((data: VideoFormat, index: number) => {
-              if (
-                data.mimeType.includes("video/mp4") &&
-                !uniqueQualities[data.qualityLabel]
-              ) {
-                uniqueQualities[data.qualityLabel] = true;
-                return (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="flex items-center gap-2">
-                      <svg
-                        className="w-5 h-5 text-gray-500"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                        />
-                      </svg>
-                      <p className="font-medium">{data.qualityLabel}</p>
-                    </div>
-                    <Button
-                      onClick={() => {
-                        window.open(data.url, "_blank");
-                      }}
-                      className="flex items-center gap-2"
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                        />
-                      </svg>
-                      Download
-                    </Button>
-                  </div>
-                );
-              }
-              return null;
-            });
-          })()}
-      </div>
-      <Toaster />
-    </div>
+        <div className="w-full space-y-4 text-white">
+          {formats.length > 0 &&
+            (() => {
+              const uniqueQualities: { [key: string]: boolean } = {};
+              return (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+                  {formats.map((data: VideoFormat, index: number) => {
+                    if (
+                      data.mimeType.includes("video/mp4") &&
+                      !uniqueQualities[data.qualityLabel]
+                    ) {
+                      uniqueQualities[data.qualityLabel] = true;
+                      return (
+                        <div
+                          key={index}
+                          className="relative group flex items-center justify-between p-6 rounded-xl border border-white/10 bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl hover:shadow-2xl hover:shadow-green-500/20 hover:border-white/20 transition-all duration-300"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 rounded-lg bg-white/10 group-hover:bg-green-500/20 transition-colors">
+                              <FiVideo className="w-6 h-6 text-white" />
+                            </div>
+                            <div>
+                              <p className="font-semibold text-white">
+                                {data.qualityLabel}
+                              </p>
+                              <p className="text-sm text-white/60">
+                                MP4 Format
+                              </p>
+                            </div>
+                          </div>
+                          <Button
+                            onClick={() => {
+                              window.open(data.url, "_blank");
+                            }}
+                            className="bg-white/10 hover:bg-green-500/50 backdrop-blur-sm text-white transition-colors duration-300 flex items-center gap-2"
+                          >
+                            <FiDownload className="w-4 h-4" />
+                            Download
+                          </Button>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
+                </div>
+              );
+            })()}
+        </div>
+        <Toaster />
+      </motion.div>
+    </AuroraBackground>
   );
 }
