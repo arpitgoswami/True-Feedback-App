@@ -21,24 +21,33 @@ export default function Hero() {
   const [isLoading, setIsLoading] = useState(false);
   const [url, setUrl] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
-    axios
-      .post("/api/info", { url })
-      .then((res) => {
-        console.log(res.data);
-        setFormats(res.data);
-        toast.success("Search completed successfully!");
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Failed to fetch video information");
-      })
-      .finally(() => {
-        setIsLoading(false);
+    try {
+      const response = await fetch("/api/info", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url }),
       });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch video information");
+      }
+
+      const data = await response.json();
+      console.log(data);
+      setFormats(data);
+      toast.success("Search completed successfully!");
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to fetch video information");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
