@@ -2,14 +2,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
-import {
-  Youtube,
-  Download,
-  AlertCircle,
-  Video,
-  Music,
-  Info,
-} from "lucide-react";
+import { Download, AlertCircle, Video, Music } from "lucide-react";
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
