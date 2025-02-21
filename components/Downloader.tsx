@@ -1,6 +1,18 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Youtube, Download, AlertCircle, Video, Music, Info } from 'lucide-react';
+"use client";
+
+import React, { useState } from "react";
+import axios from "axios";
+import {
+  Youtube,
+  Download,
+  AlertCircle,
+  Video,
+  Music,
+  Info,
+} from "lucide-react";
+
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 interface VideoFormat {
   quality: string;
@@ -20,10 +32,10 @@ interface VideoData {
   formats: VideoFormat[];
 }
 
-function App() {
-  const [videoUrl, setVideoUrl] = useState('');
+export default function Downloader() {
+  const [videoUrl, setVideoUrl] = useState("");
   const [videoData, setVideoData] = useState<VideoData | null>(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const extractVideoId = (url: string) => {
@@ -33,21 +45,22 @@ function App() {
   };
 
   const formatFileSize = (bytes: string | undefined) => {
-    if (!bytes) return 'Unknown size';
+    if (!bytes) return "Unknown size";
     const size = parseInt(bytes);
-    if (size < 1024) return size + ' B';
-    else if (size < 1024 * 1024) return (size / 1024).toFixed(1) + ' KB';
-    else if (size < 1024 * 1024 * 1024) return (size / (1024 * 1024)).toFixed(1) + ' MB';
-    else return (size / (1024 * 1024 * 1024)).toFixed(1) + ' GB';
+    if (size < 1024) return size + " B";
+    else if (size < 1024 * 1024) return (size / 1024).toFixed(1) + " KB";
+    else if (size < 1024 * 1024 * 1024)
+      return (size / (1024 * 1024)).toFixed(1) + " MB";
+    else return (size / (1024 * 1024 * 1024)).toFixed(1) + " GB";
   };
 
   const processFormats = (adaptiveFormats: any[]) => {
-    return adaptiveFormats.map(format => {
-      const isVideo = format.mimeType?.includes('video');
-      const isAudio = format.mimeType?.includes('audio');
-      
+    return adaptiveFormats.map((format) => {
+      const isVideo = format.mimeType?.includes("video");
+      const isAudio = format.mimeType?.includes("audio");
+
       return {
-        quality: format.qualityLabel || format.audioQuality || 'Unknown',
+        quality: format.qualityLabel || format.audioQuality || "Unknown",
         url: format.url,
         mimeType: format.mimeType,
         hasVideo: isVideo,
@@ -55,38 +68,43 @@ function App() {
         qualityLabel: format.qualityLabel,
         bitrate: format.bitrate,
         contentLength: format.contentLength,
-        audioQuality: format.audioQuality
+        audioQuality: format.audioQuality,
       };
     });
   };
 
   const fetchVideoData = async () => {
     const videoId = extractVideoId(videoUrl);
-    
+
     if (!videoId) {
-      setError('Please enter a valid YouTube URL');
+      setError("Please enter a valid YouTube URL");
       return;
     }
 
     setLoading(true);
-    setError('');
+    setError("");
     setVideoData(null);
 
     try {
       const options = {
-        method: 'GET',
-        url: 'https://ytstream-download-youtube-videos.p.rapidapi.com/dl',
+        method: "GET",
+        url: "https://ytstream-download-youtube-videos.p.rapidapi.com/dl",
         params: { id: videoId },
         headers: {
-          'x-rapidapi-key': '5840247a03mshcf7ab0ea76dc5dcp1f8095jsnee78d61a3214',
-          'x-rapidapi-host': 'ytstream-download-youtube-videos.p.rapidapi.com'
-        }
+          "x-rapidapi-key":
+            "5840247a03mshcf7ab0ea76dc5dcp1f8095jsnee78d61a3214",
+          "x-rapidapi-host": "ytstream-download-youtube-videos.p.rapidapi.com",
+        },
       };
 
       const response = await axios.request(options);
-      
-      if (!response.data.title || !response.data.thumbnail || !response.data.adaptiveFormats) {
-        throw new Error('Invalid response format from API');
+
+      if (
+        !response.data.title ||
+        !response.data.thumbnail ||
+        !response.data.adaptiveFormats
+      ) {
+        throw new Error("Invalid response format from API");
       }
 
       const processedFormats = processFormats(response.data.adaptiveFormats);
@@ -94,10 +112,10 @@ function App() {
       setVideoData({
         title: response.data.title,
         thumbnail: response.data.thumbnail,
-        formats: processedFormats
+        formats: processedFormats,
       });
     } catch (error) {
-      setError('Failed to fetch video data. Please try again.');
+      setError("Failed to fetch video data. Please try again.");
       console.error(error);
     } finally {
       setLoading(false);
@@ -107,10 +125,15 @@ function App() {
   const FormatButton = ({ format }: { format: VideoFormat }) => {
     const isVideoFormat = format.hasVideo;
     const Icon = isVideoFormat ? Video : Music;
-    const formatType = format.mimeType.split(';')[0].split('/')[1].toUpperCase();
-    const bitrate = format.bitrate ? `${Math.round(format.bitrate / 1000)} kbps` : '';
+    const formatType = format.mimeType
+      .split(";")[0]
+      .split("/")[1]
+      .toUpperCase();
+    const bitrate = format.bitrate
+      ? `${Math.round(format.bitrate / 1000)} kbps`
+      : "";
     const fileSize = formatFileSize(format.contentLength);
-    
+
     return (
       <a
         href={format.url}
@@ -133,29 +156,29 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
+    <div className="min-h-screen flex justify-center items-center bg-gray-100 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <div className="flex items-center justify-center mb-8">
-            <Youtube className="w-10 h-10 text-red-600 mr-3" />
-            <h1 className="text-3xl font-bold text-gray-800">YouTube Downloader</h1>
+        <div className="p-6 space-y-4">
+          <div className="flex items-center justify-center">
+            <h1 className="text-4xl md:text-6xl font-bold text-center">
+              Download Youtube Videos
+            </h1>
           </div>
+          <p className="text-sm text-gray-600 text-center">
+            Convert Youtube videos to mp3, mp4, and more with our easy to use
+            converter.
+          </p>
 
-          <div className="flex gap-4 mb-8">
-            <input
+          <div className="flex gap-2 mb-8">
+            <Input
               type="text"
               value={videoUrl}
               onChange={(e) => setVideoUrl(e.target.value)}
               placeholder="Paste YouTube URL here..."
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <button
-              onClick={fetchVideoData}
-              disabled={loading}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400"
-            >
-              {loading ? 'Loading...' : 'Download'}
-            </button>
+            <Button onClick={fetchVideoData} disabled={loading}>
+              {loading ? "Loading..." : "Download"}
+            </Button>
           </div>
 
           {error && (
@@ -176,8 +199,10 @@ function App() {
                   />
                 </div>
                 <div className="flex-1">
-                  <h2 className="text-xl font-semibold mb-4">{videoData.title}</h2>
-                  
+                  <h2 className="text-xl font-semibold mb-4">
+                    {videoData.title}
+                  </h2>
+
                   {/* Video formats */}
                   <div className="mb-6">
                     <h3 className="text-lg font-medium mb-3 flex items-center gap-2">
@@ -186,9 +211,12 @@ function App() {
                     </h3>
                     <div className="space-y-2">
                       {videoData.formats
-                        .filter(format => format.hasVideo)
+                        .filter((format) => format.hasVideo)
                         .map((format, index) => (
-                          <FormatButton key={`video-${index}`} format={format} />
+                          <FormatButton
+                            key={`video-${index}`}
+                            format={format}
+                          />
                         ))}
                     </div>
                   </div>
@@ -201,9 +229,12 @@ function App() {
                     </h3>
                     <div className="space-y-2">
                       {videoData.formats
-                        .filter(format => !format.hasVideo && format.hasAudio)
+                        .filter((format) => !format.hasVideo && format.hasAudio)
                         .map((format, index) => (
-                          <FormatButton key={`audio-${index}`} format={format} />
+                          <FormatButton
+                            key={`audio-${index}`}
+                            format={format}
+                          />
                         ))}
                     </div>
                   </div>
@@ -216,5 +247,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
