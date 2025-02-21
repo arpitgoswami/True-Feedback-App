@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import ytdl from "@distube/ytdl-core";
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,6 +8,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 });
     }
 
+    const ytdl = (await import("@distube/ytdl-core")).default;
     const info = await ytdl.getInfo(url);
     const formats = info.formats;
 
