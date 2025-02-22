@@ -47,8 +47,8 @@ export default function Downloader() {
     else return (size / (1024 * 1024 * 1024)).toFixed(1) + " GB";
   };
 
-  const processFormats = (adaptiveFormats: any[]) => {
-    return adaptiveFormats.map((format) => {
+  const processFormats = (adaptiveFormats: VideoFormat[]) => {
+    return adaptiveFormats.map((format: VideoFormat) => {
       const isVideo = format.mimeType?.includes("video");
       const isAudio = format.mimeType?.includes("audio");
 
