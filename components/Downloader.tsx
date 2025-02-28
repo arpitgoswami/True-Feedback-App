@@ -40,7 +40,7 @@ export default function Downloader() {
   const [loading, setLoading] = useState(false);
 
   const extractVideoId = (url: string) => {
-    let match = url.match(/(?:v=|\/|shorts\/)([0-9A-Za-z_-]{11})/);
+    const match = url.match(/(?:v=|\/|shorts\/)([0-9A-Za-z_-]{11})/);
     return match ? match[1] : null;
   };
 
@@ -152,7 +152,7 @@ export default function Downloader() {
               </div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl font-bold tracking-tight text-[#00F0FF] uppercase">
-                  <span className="text-white">TUBE</span>XPLOIT
+                  <span className="text-white">TUBE</span>PILOT
                 </h1>
                 <div className="relative group">
                   <div className="absolute -inset-0.5 bg-gradient-to-r from-[#00F0FF] to-[#FC00FF] rounded-full opacity-75 blur"></div>
@@ -162,14 +162,11 @@ export default function Downloader() {
                 </div>
               </div>
             </div>
-            <button className="group relative px-4 py-2 overflow-hidden">
-              <div className="absolute inset-0 w-3 bg-gradient-to-r from-[#00F0FF] to-[#FC00FF] transition-all duration-[400ms] ease-out group-hover:w-full opacity-30"></div>
-              <div className="relative flex items-center gap-2 text-[#00F0FF] group-hover:text-white">
-                <Github className="w-4 h-4" />
-                <span className="font-medium text-sm uppercase tracking-wider">
-                  Connect Wallet
-                </span>
-              </div>
+            <button className="flex justify-center gap-2 items-center group relative px-4 py-2 overflow-hidden">
+              <Github className="w-4 h-4" />
+              <span className="font-medium text-sm uppercase tracking-wider">
+                Star on GitHub
+              </span>
             </button>
           </div>
         </header>
@@ -181,7 +178,7 @@ export default function Downloader() {
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#00F0FF] rounded-full blur-[80px] opacity-30"></div>
               <h1 className="text-5xl md:text-6xl font-bold mb-6 uppercase relative">
                 <span className="tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#00F0FF] to-[#FC00FF]">
-                  Tube<span className="text-white">Xploit</span>
+                  Tube<span className="text-white">Pilot</span>
                 </span>
               </h1>
               <p className="text-[#888888] text-lg max-w-2xl mx-auto leading-relaxed">
@@ -280,11 +277,7 @@ export default function Downloader() {
                         <div className="absolute inset-0 bg-[url('/glitch.png')] mix-blend-screen opacity-0 group-hover:opacity-10 transition-opacity"></div>
                         <div className="absolute inset-0 bg-gradient-to-tr from-[#00F0FF]/10 to-[#FC00FF]/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <div className="absolute -inset-0.5 bg-gradient-to-tr from-[#00F0FF] to-[#FC00FF] opacity-0 group-hover:opacity-30 blur-sm transition-opacity"></div>
-                        <img
-                          src={videoData.thumbnail}
-                          alt={videoData.title}
-                          className="w-full h-auto object-cover relative"
-                        />
+                        {videoData.title}
                         <div className="absolute bottom-0 left-0 right-0 px-3 py-1 bg-black/60 backdrop-blur-sm text-xs text-white">
                           <div className="flex items-center justify-between">
                             <span>SECURED CONTENT</span>
@@ -514,7 +507,7 @@ export default function Downloader() {
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-[#444444]">
-                <span className="text-[#00F0FF]">TUBEXPLOIT</span>
+                <span className="text-[#00F0FF]">TUBEPILOT</span>
                 <div className="w-1 h-1 rounded-full bg-[#00F0FF]"></div>
                 <span>EST. 2025</span>
                 <div className="w-1 h-1 rounded-full bg-[#00F0FF]"></div>
